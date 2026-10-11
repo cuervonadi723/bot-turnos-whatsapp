@@ -44,6 +44,7 @@ def verificar_webhook():
 @app.post("/webhook")
 def recibir_mensaje():
     for telefono, texto in whatsapp.mensajes_entrantes(request.get_json(silent=True) or {}):
+        app.logger.info("Mensaje de %s: %s", telefono, texto)
         if texto == "__no_texto__":
             respuestas = ["Por ahora solo entiendo mensajes de texto 🙂 Escribí *menu* para empezar."]
         else:
