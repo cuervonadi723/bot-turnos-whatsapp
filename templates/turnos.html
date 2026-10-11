@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Turnos · {{ negocio }}</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 0; padding: 20px; background: #f6f7f6; color: #1c2620; }
+  h1 { font-size: 20px; margin: 0 0 16px; }
+  table { border-collapse: collapse; width: 100%; max-width: 760px; background: #fff; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #e3e6e3; font-size: 14px; }
+  th { background: #075E54; color: #fff; font-weight: 600; }
+  .vacio { color: #5b675f; }
+</style>
+</head>
+<body>
+<h1>Próximos turnos · {{ negocio }}</h1>
+{% if turnos %}
+<table>
+  <tr><th>Día</th><th>Hora</th><th>Cliente</th><th>Servicio</th><th>Teléfono</th></tr>
+  {% for t in turnos %}
+  <tr><td>{{ t.dia }}</td><td>{{ t.hora }}</td><td>{{ t.nombre }}</td><td>{{ t.servicio }}</td><td>{{ t.telefono }}</td></tr>
+  {% endfor %}
+</table>
+{% else %}
+<p class="vacio">No hay turnos reservados.</p>
+{% endif %}
+</body>
+</html>

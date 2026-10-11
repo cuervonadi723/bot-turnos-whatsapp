@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulador · {{ negocio }}</title>
+<style>
+  :root { --verde: #075E54; --fondo: #ECE5DD; --mio: #DCF8C6; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, sans-serif; background: #d9dbd5; display: flex; justify-content: center; }
+  .telefono { width: 100%; max-width: 420px; height: 100vh; display: flex; flex-direction: column; background: var(--fondo); }
+  header { background: var(--verde); color: #fff; padding: 14px 16px; }
+  header b { display: block; font-size: 16px; }
+  header small { opacity: .8; }
+  #chat { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .msg { max-width: 85%; padding: 8px 10px; border-radius: 8px; white-space: pre-wrap; line-height: 1.35;
+         font-size: 14.5px; box-shadow: 0 1px 1px rgba(0,0,0,.1); }
+  .bot { background: #fff; align-self: flex-start; }
+  .yo { background: var(--mio); align-self: flex-end; }
+  form { display: flex; gap: 8px; padding: 10px; background: #f0f0f0; }
+  input { flex: 1; padding: 10px 14px; border: none; border-radius: 20px; font-size: 15px; }
+  button { background: var(--verde); color: #fff; border: none; border-radius: 20px; padding: 0 18px; font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="telefono">
+  <header><b>{{ negocio }}</b><small>Simulador del bot · escribí "hola" para empezar</small></header>
+  <div id="chat"></div>
+  <form id="form">
+    <input id="texto" autocomplete="off" placeholder="Escribí un mensaje" autofocus>
+    <button>Enviar</button>
+  </form>
+</div>
+<script>
+  const chat = document.getElementById('chat');
+  const telefono = Math.random().toString(36).slice(2, 10);
+  function agregar(texto, clase) {
+    const div = document.createElement('div');
+    div.className = 'msg ' + clase;
+    div.textContent = texto.replace(/\*(.+?)\*/g, '$1');
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+  }
+  document.getElementById('form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const input = document.getElementById('texto');
+    const texto = input.value.trim();
+    if (!texto) return;
+    agregar(texto, 'yo');
+    input.value = '';
+    const r = await fetch('/simulador/mensaje', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({telefono, texto})
+    });
+    const datos = await r.json();
+    datos.respuestas.forEach(t => agregar(t, 'bot'));
+  });
+</script>
+</body>
+</html>
