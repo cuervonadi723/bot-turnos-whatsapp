@@ -1,5 +1,7 @@
 # Bot de turnos por WhatsApp
 
+![Reserva completa en 4 pasos](capturas/portafolio_bot_turnos.png)
+
 Bot para que los clientes de un negocio saquen, consulten y cancelen turnos por WhatsApp, sin intervención humana. El ejemplo está armado para una barbería, pero se adapta a cualquier negocio con turnos (peluquería, podología, consultorio, taller) cambiando un solo archivo.
 
 ## Qué hace
